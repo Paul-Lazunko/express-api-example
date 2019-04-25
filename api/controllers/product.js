@@ -27,6 +27,8 @@ const options = {
     },
   },
 
+  populate: [{path: 'user'}],
+
   overriddenMongooseMethods: {
     find: true,
   },

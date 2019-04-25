@@ -26,6 +26,11 @@ const ProductSchema = new mongoose.Schema({
     required: true,
   },
 
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
+
   createdAt: {
     type: Number,
     default: Math.round(new Date().getTime() / 1000),
