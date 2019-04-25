@@ -1,0 +1,1271 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Docs for API",
+    "version": "0.0.1",
+    "title": "API Routes"
+  },
+  "basePath": "/api/v1",
+  "schemes": ["http"],
+  "tags": [],
+  "securityDefinitions": {
+    "bearer": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization"
+    }
+  },
+  "paths": {
+    "/user/": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user list",
+        "operationId": "get-user-list",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "search",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "searchBy",
+            "description": "valid values => [ 'username' ]",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "perPage",
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "description": "valid values => [ 'createdAt', 'username ]",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "role",
+            "type": "string",
+            "enum": ["1", "2"],
+            "default": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "default": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "users": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/User"
+                      }
+                    },
+                    "totalCount": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "tags": ["User"],
+        "summary": "Create user",
+        "operationId": "create-user",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "required": true
+                },
+                "password": {
+                  "type": "string",
+                  "required": true
+                },
+                "role": {
+                  "type": "number",
+                  "enum": [1, 2],
+                  "default": 1
+                },
+                "isActive": {
+                  "type": "boolean",
+                  "enum": [0, 1],
+                  "default": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": "object",
+                "status": {
+                  "type": "boolean",
+                  "default": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "$ref": "#/definitions/User"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user",
+        "operationId": "get-user",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User _id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": "object",
+                "status": {
+                  "type": "boolean",
+                  "default": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "$ref": "#/definitions/User"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["User"],
+        "summary": "Delete user by id",
+        "operationId": "delete-user",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User _id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "202": {
+            "$ref": "#/responses/Success"
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["User"],
+        "summary": "Update user",
+        "operationId": "update-user",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User _id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string"
+                },
+                "role": {
+                  "type": "number",
+                  "enum": [1, 2]
+                },
+                "password": {
+                  "type": "string"
+                },
+                "isActive": {
+                  "type": "number",
+                  "enum": [0, 1],
+                  "default": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "$ref": "#/responses/Success"
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/user/{id}/file": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Set user file property",
+        "operationId": "set-user-file",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User _id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "avatar",
+            "type": "file",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": "object",
+                "status": {
+                  "type": "boolean",
+                  "default": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "avatar": {}
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          }
+        }
+      }
+    },
+
+    "/token": {
+      "get": {
+        "tags": ["Token"],
+        "summary": "Get token list",
+        "operationId": "get-token",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "required": true,
+            "name": "user",
+            "type": "string",
+            "description": "User _id"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "perPage",
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "description": "valid values => [ 'asc','desc' ]",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "description": "valid values => [ 'createdAt' ]",
+            "type": "string"
+          }
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": "object",
+                "status": {
+                  "type": "boolean",
+                  "default": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "tokens": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/Token"
+                      }
+                    },
+                    "totalCount": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Authorization", "Token"],
+        "summary": "Create token ( Authorization )",
+        "operationId": "create-token",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "required": true
+                },
+                "password": {
+                  "type": "string",
+                  "required": true
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": "object",
+                "status": {
+                  "type": "boolean",
+                  "default": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string"
+                        },
+                        "hash": {
+                          "type": "string"
+                        },
+                        "expiresIn": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "user": {
+                      "$ref": "#/definitions/User"
+                    },
+                    "companies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/Token"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/token/{id}": {
+      "delete": {
+        "tags": ["Token"],
+        "summary": "Delete token",
+        "operationId": "delete-token",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Token _id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "202": {
+            "$ref": "#/responses/Success"
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Token"],
+        "summary": "Update token",
+        "operationId": "set-firebase-token",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Token _id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "fireBaseToken": {
+                  "type": "string"
+                },
+                "isActive": {
+                  "type": "boolean",
+                  "enum": [0, 1]
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "$ref": "#/responses/Success"
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+
+    "/product/": {
+      "get": {
+        "tags": ["Product"],
+        "summary": "Get products list",
+        "operationId": "get-products-list",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "search",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "searchBy",
+            "description": "valid values => [ 'user.username', 'title' ]",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["user.username", "title"]
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "perPage",
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "type": "string",
+            "enum": ["asc", "desc"]
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "description": "valid values => [ 'price', 'amount', 'title', 'createdAt' ]",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "isActive",
+            "type": "number",
+            "enum": [0, 1]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "default": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "products": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/Product"
+                      }
+                    },
+                    "totalCount": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Product"],
+        "summary": "Create Product",
+        "operationId": "create-product",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "required": true
+                },
+                "price": {
+                  "type": "number",
+                  "required": true
+                },
+                "amount": {
+                  "type": "number",
+                  "required": true
+                },
+                "isActive": {
+                  "type": "number",
+                  "enum": [0, 1],
+                  "default": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": "object",
+                "status": {
+                  "type": "boolean",
+                  "default": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "invite": {
+                      "$ref": "#/definitions/Product"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/product/{id}": {
+      "get": {
+        "tags": ["Product"],
+        "summary": "Get Product",
+        "operationId": "get-product",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Product _id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": "object",
+                "status": {
+                  "type": "boolean",
+                  "default": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "invite": {
+                      "$ref": "#/definitions/Product"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Product"],
+        "summary": "Delete Product by id",
+        "operationId": "delete-product",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Product _id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "202": {
+            "$ref": "#/responses/Success"
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Product"],
+        "summary": "Update Product",
+        "operationId": "update-product",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Product _id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "price": {
+                  "type": "number"
+                },
+                "amount": {
+                  "type": "number"
+                },
+                "isActive": {
+                  "type": "number",
+                  "enum": [0, 1],
+                  "default": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "$ref": "#/responses/Success"
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+
+    "/config/languages/": {
+      "get": {
+        "tags": ["Config"],
+        "summary": "Get languages",
+        "operationId": "get-languages-list",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": "object",
+                "status": {
+                  "type": "boolean",
+                  "default": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "languages": {
+                      "type": "object",
+                      "properties": {
+                        "English": {
+                          "type": "string",
+                          "name": "English",
+                          "shortName": "en"
+                        },
+                        "Русский": {
+                          "type": "string",
+                          "name": "Русский",
+                          "shortName": "ru"
+                        },
+                        "Українська": {
+                          "type": "string",
+                          "name": "Українська",
+                          "shortName": "ua"
+                        },
+                        "Deutsch": {
+                          "type": "string",
+                          "name": "Deutsch",
+                          "shortName": "de"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/config/timeZones/": {
+      "get": {
+        "tags": ["Config"],
+        "summary": "Get timeZones",
+        "operationId": "get-timeZones-list",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": "object",
+                "status": {
+                  "type": "boolean",
+                  "default": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "timeZones": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/TimeZones"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          }
+        }
+      }
+    }
+  },
+  "responses": {
+    "ValidationError": {
+      "type": "object",
+      "description": "Validation error",
+      "properties": {
+        "status": {
+          "type": "boolean",
+          "default": false
+        },
+        "error": {
+          "type": "string"
+        }
+      }
+    },
+    "Created": {
+      "type": "object",
+      "description": "Created",
+      "properties": {
+        "status": {
+          "type": "boolean",
+          "default": true
+        },
+        "data": {
+          "type": "object"
+        }
+      }
+    },
+    "Success": {
+      "type": "object",
+      "description": "Accepted",
+      "properties": {
+        "status": {
+          "type": "boolean",
+          "default": true
+        },
+        "data": {
+          "type": "object"
+        }
+      }
+    },
+    "NotFound": {
+      "type": "object",
+      "description": "Not Found",
+      "properties": {
+        "status": {
+          "type": "boolean",
+          "default": false
+        },
+        "error": {
+          "type": "string"
+        }
+      }
+    },
+    "Forbidden": {
+      "type": "object",
+      "description": "Access Denied",
+      "properties": {
+        "status": {
+          "type": "boolean",
+          "default": false
+        },
+        "error": {
+          "type": "string"
+        }
+      }
+    },
+    "Unauthorized": {
+      "type": "object",
+      "description": "Unauthorized",
+      "properties": {
+        "status": {
+          "type": "boolean",
+          "default": false
+        },
+        "error": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Token": {
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "userAgent": {
+          "type": "string"
+        },
+        "userIp": {
+          "type": "string"
+        },
+        "hash": {
+          "type": "string"
+        },
+        "fireBaseToken": {
+          "type": "string"
+        },
+        "isActive": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "number"
+        },
+        "expiresAt": {
+          "type": "string"
+        }
+      }
+    },
+    "User": {
+      "properties": {
+        "username": {
+          "type": "string",
+          "description": "Get in uppercase first letter. Sets in lowercase"
+        },
+        "avatar": {
+          "type": "string",
+          "description": "AWS S3 url"
+        },
+        "isOnline": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "isActive": {
+          "type": "boolean",
+          "default": "true"
+        },
+        "role": {
+          "type": "number",
+          "enum": [1, 2],
+          "default": 1
+        },
+        "lastSeen": {
+          "type": "number"
+        },
+        "createdAt": {
+          "type": "number"
+        }
+      }
+    },
+    "Product": {
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "title": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number"
+        },
+        "isActive": {
+          "type": "boolean",
+          "default": "true"
+        },
+        "createdAt": {
+          "type": "number"
+        }
+      }
+    },
+    "Languages": {
+      "type": "object",
+      "properties": {
+        "English": {
+          "type": "string",
+          "name": "English",
+          "shortName": "en"
+        },
+        "Русский": {
+          "type": "string",
+          "name": "Русский",
+          "shortName": "ru"
+        },
+        "Українська": {
+          "type": "string",
+          "name": "Українська",
+          "shortName": "ua"
+        },
+        "Deutsch": {
+          "type": "string",
+          "name": "Deutsch",
+          "shortName": "de"
+        }
+      }
+    },
+    "TimeZones": {
+      "properties": {
+        "Samoa": {
+          "type": "string",
+          "zone": "US/Samoa",
+          "gmt": "(GMT-11:00)",
+          "name": "Samoa"
+        }
+      }
+    }
+  }
+}

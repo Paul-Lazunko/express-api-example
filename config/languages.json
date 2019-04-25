@@ -1,0 +1,18 @@
+[
+  {
+    "name": "English",
+    "shortName": "en"
+  },
+  {
+    "name": "Deutsch",
+    "shortName": "de"
+  },
+  {
+    "name": "Русский",
+    "shortName": "ru"
+  },
+  {
+    "name": "Українська",
+    "shortName": "ua"
+  }
+]
