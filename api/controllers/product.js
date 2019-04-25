@@ -45,7 +45,7 @@ const options = {
     query: Joi.object({
       sortBy: Joi.string().valid(['title', 'price', 'amount', 'createdAt']),
       sort: Joi.string().valid(['asc', 'desc']),
-      searchBy: JoiMethods.default.arrayOf(Joi.string().valid(['title', 'user.username'])),
+      searchBy: Joi.string().valid(['title', 'user.username', 'title,user.username']),
       search: Joi.string().allow(''),
       user: Joi.objectId(),
       price: JoiMethods.default.positiveInteger,

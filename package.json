@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo test",
     "start": "node -r esm index.js",
-    "prettier": "prettier ./api/* ./core/* ./config/*"
+    "prettier": "prettier ./api/*/** ./core/*/** ./config/*/**"
   },
   "keywords": [],
   "author": "Paul Lazunko",

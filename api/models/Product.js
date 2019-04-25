@@ -63,6 +63,7 @@ ProductSchema.statics.overriddenFind = async req => {
         amount: 1,
         price: 1,
         createdAt: 1,
+        isActive: 1,
       },
     },
     $lookup = {

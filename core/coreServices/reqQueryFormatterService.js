@@ -39,7 +39,6 @@ const reqQueryFormatterService = {
         });
       }
     }
-    console.log({query});
 
     if (search && searchBy) {
       let searchFields = searchBy.split(',');
@@ -53,6 +52,7 @@ const reqQueryFormatterService = {
         }
       });
     }
+
     pagination.skip = perPage * (page - 1);
     pagination.limit = perPage;
 

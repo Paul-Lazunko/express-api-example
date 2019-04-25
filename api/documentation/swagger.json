@@ -655,11 +655,7 @@
             "in": "query",
             "name": "searchBy",
             "description": "valid values => [ 'user.username', 'title' ]",
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": ["user.username", "title"]
-            }
+            "type": "string"
           },
           {
             "in": "query",
