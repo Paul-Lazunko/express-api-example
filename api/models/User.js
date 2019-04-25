@@ -87,7 +87,7 @@ UserSchema.statics.overriddenUpdate = async req => {
   let userData = req.body;
   resetUserRole(userData, req);
   if (userData.password) {
-    await createCredentials(user, userData.password);
+    await createCredentials(req.user, userData.password);
   }
   return await mongoose.model('User').update({_id: req.params.id}, userData);
 };
