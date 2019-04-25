@@ -54,13 +54,13 @@ let accessStrategy = {
   },
   product: {
     update: async req => {
-      return await userAccessToEntity(req, 'Token', {_id: req.params.id});
+      return await userAccessToEntity(req, 'Product', {_id: req.params.id});
     },
     file: async req => {
-      return await userAccessToEntity(req, 'Token', {_id: req.params.id});
+      return await userAccessToEntity(req, 'Product', {_id: req.params.id});
     },
     remove: async req => {
-      return await userAccessToEntity(req, 'Token', {_id: req.params.id});
+      return await userAccessToEntity(req, 'Product', {_id: req.params.id});
     },
   },
 };
