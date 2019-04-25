@@ -78,7 +78,7 @@ ProductSchema.statics.overriddenFind = async req => {
       $unwind: '$user',
     },
     $match = {
-      $match: query.$or && query.$or.length === 1 ? query.$or[0] : query.$or,
+      $match: query.$or && query.$or.length === 1 ? query.$or[0] : query,
     },
     $sort = {
       $sort: Object.keys(sorting).length ? sorting : {createdAt: -1},

@@ -9,7 +9,7 @@ let userAccessToEntity = async (req, entity, query) => {
   if (isSuperAdmin(req.user)) {
     return true;
   } else if (req.user) {
-    let element = await mongoose.model(entity).find(query);
+    let element = await mongoose.model(entity).findOne(query);
     return element && element.user.toString() === req.user._id.toString();
   } else {
     return false;
