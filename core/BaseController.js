@@ -45,10 +45,9 @@ export class BaseController {
     return new Proxy(this.context, {
       get(target, name) {
         if (typeof target[name] === 'function') {
-          return async function() {
-            const [req, res, next] = arguments;
+          return async function(req, res, next) {
             try {
-              return await target[name].apply(target, arguments);
+              return await target[name].apply(target, [req, res, next]);
             } catch (e) {
               next(e);
             }
